@@ -1,25 +1,35 @@
 
+//1) Umieść w bazie (nazwa bucketa ma być Twoim numerem indeksu poprzedzonym literą „s”) 5 wartości, gdzie każda z nich ma być dokumentem json mającym 4 pola co najmniej dwóch różnych typów.
+
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"Grand Punto","brand":"Fiat","hp":74,"max_speed":170}' http://localhost:8098/buckets/s25884/keys/punto3
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"159","brand":"Alfa Romeo","hp":156,"max_speed":230}' http://localhost:8098/buckets/s25884/keys/romeo159
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"civic","brand":"Honda","hp":146,"max_speed":210}' http://localhost:8098/buckets/s25884/keys/civic
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"m5","brand":"BMW","hp":210,"max_speed":240}' http://localhost:8098/buckets/s25884/keys/m5
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"mx5","brand":"Mazda","hp":131,"max_speed":215}' http://localhost:8098/buckets/s25884/keys/mx5
 
-
+//2. Pobierz z bazy jedną z dodanych przez Ciebie wartości.
 curl -i -XGET  http://localhost:8098/buckets/s25884/keys/punto3
 
+//3. Zmodyfikuj jedną z wartości – dodając dodatkowe pole do dokumentu.
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"Grand Punto","brand":"Fiat","hp":74,"max_speed":170,"working":false}' http://localhost:8098/buckets/s25884/keys/punto3
 
+//4. Zmodyfikuj jedną z wartości – usuwając jedną pole z wybranego dokumentu.
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"mx5","brand":"Mazda","hp":131}' http://localhost:8098/buckets/s25884/keys/mx5
 
+//5. Zmodyfikuj jedną z wartości – zmieniając wartość jednego z pól.
 curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"m5","brand":"BMW","hp":212,"max_speed":240}' http://localhost:8098/buckets/s25884/keys/m5
 
+//6. Usuń jeden z dokumentów z bazy.
 curl -i -XDELETE  http://localhost:8098/buckets/s25884/keys/m5
 
+//7. Spróbuj pobrać z bazy wartość, która nie istnieje w tej bazie.
 curl -i -XGET  http://localhost:8098/buckets/s25884/keys/m5
 
+//8. Dodaj do bazy 1 dokument json (zawierający 1 pole), ale nie specyfikuj klucza.
 curl -i -XPOST -H "Content-Type: application/json" -d '{"isCar": true}' http://localhost:8098/buckets/s25884/keys
 
+//9. Pobierz z bazy element z zadania 8.
 curl -i -XGET  http://localhost:8098/buckets/s25884/keys/VkeqfZAxAzfgCurvp7TCoJi6H5O
 
+//10. Usuń z bazy element z zadania 8
 curl -i -XDELETE  http://localhost:8098/buckets/s25884/keys/VkeqfZAxAzfgCurvp7TCoJi6H5O
