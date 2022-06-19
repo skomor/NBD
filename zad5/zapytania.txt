@@ -1,0 +1,25 @@
+
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"Grand Punto","brand":"Fiat","hp":74,"max_speed":170}' http://localhost:8098/buckets/s25884/keys/punto3
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"159","brand":"Alfa Romeo","hp":156,"max_speed":230}' http://localhost:8098/buckets/s25884/keys/romeo159
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"civic","brand":"Honda","hp":146,"max_speed":210}' http://localhost:8098/buckets/s25884/keys/civic
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"m5","brand":"BMW","hp":210,"max_speed":240}' http://localhost:8098/buckets/s25884/keys/m5
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"mx5","brand":"Mazda","hp":131,"max_speed":215}' http://localhost:8098/buckets/s25884/keys/mx5
+
+
+curl -i -XGET  http://localhost:8098/buckets/s25884/keys/punto3
+
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"Grand Punto","brand":"Fiat","hp":74,"max_speed":170,"working":false}' http://localhost:8098/buckets/s25884/keys/punto3
+
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"mx5","brand":"Mazda","hp":131}' http://localhost:8098/buckets/s25884/keys/mx5
+
+curl -i -XPUT -H "Content-Type: application/json" -d '{"name":"m5","brand":"BMW","hp":212,"max_speed":240}' http://localhost:8098/buckets/s25884/keys/m5
+
+curl -i -XDELETE  http://localhost:8098/buckets/s25884/keys/m5
+
+curl -i -XGET  http://localhost:8098/buckets/s25884/keys/m5
+
+curl -i -XPOST -H "Content-Type: application/json" -d '{"isCar": true}' http://localhost:8098/buckets/s25884/keys
+
+curl -i -XGET  http://localhost:8098/buckets/s25884/keys/VkeqfZAxAzfgCurvp7TCoJi6H5O
+
+curl -i -XDELETE  http://localhost:8098/buckets/s25884/keys/VkeqfZAxAzfgCurvp7TCoJi6H5O

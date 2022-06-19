@@ -1,0 +1,17 @@
+data to create:
+{'name': 'Supra', 'brand': 'Toyota', 'hp': 300, 'max_speed': 260}
+created status: 
+<Response [204]>
+GET1: 
+b'name=Supra&brand=Toyota&hp=300&max_speed=260'
+data to update:
+{'name': 'Supra', 'brand': 'Toyota', 'hp': 300, 'max_speed': 265}
+edit status: 
+<Response [204]>
+GET2: 
+b'name=Supra&brand=Toyota&hp=300&max_speed=265'
+deleting
+delete status: 
+<Response [204]>
+GET3:
+b'not found\n'

@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+X-Riak-Vclock: a85hYGBgzGDKBVI8+xkWvvderWoAEUpkzGNlsGZVucOXBQA=
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Link: </buckets/s25884>; rel="up"
+Last-Modified: Sun, 19 Jun 2022 20:38:19 GMT
+ETag: "31AS56cdAUywsd3dkdUuOi"
+Date: Sun, 19 Jun 2022 20:41:11 GMT
+Content-Type: application/json
+Content-Length: 49
+
+{name:Grand Punto,brand:Fiat,hp:74,max_speed:170}
