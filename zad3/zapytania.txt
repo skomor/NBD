@@ -1,0 +1,54 @@
+//1. Wszystkie filmy
+MATCH (movies:Movie) RETURN movies
+
+//2. Wszystkie filmy, w których grał Hugo Weaving
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(hugoMovies) RETURN hugo,hugoMovies
+
+//3. Reżyserzy filmów, w których grał Hugo Weaving
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(hugoMovies)<-[:DIRECTED]-(directors) RETURN  directors
+
+//4. Wszystkie osoby, z którymi Hugo Weaving grał w tych samych filmach
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(hugoMovies)<-[:ACTED_IN]-(co_stars) RETURN  co_stars, hugoMovies
+
+//5. Wszystkie filmy osób, które grały w Matrix
+MATCH (m:Movie)<-[:ACTED_IN]-(person) 
+WHERE (person)-[:ACTED_IN]->(:Movie { title: "The Matrix" })
+RETURN m, person
+
+//6. Listę aktorów (aktor = osoba, która grała przynajmniej w jednym filmie) wraz z ilością filmów, w których grali
+MATCH (people:Person)-[:ACTED_IN]->(starred)
+WITH   people, COUNT(starred) as ct 
+WHERE ct > 0
+RETURN people, ct
+
+//7. Listę osób, które napisały scenariusz filmu, które wyreżyserowały wraz z tytułami takich filmów (koniunkcja – ten sam autor scenariusza i reżyser)
+MATCH (p:Person)-[:WROTE]->(m)<-[:DIRECTED]-(p)
+RETURN m,p
+
+//8. Listę filmów, w których grał zarówno Hugo Weaving jak i Keanu Reeves
+MATCH (p:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(x:Person {name: "Keanu Reeves"})
+RETURN m,p,x
+
+//9. (za 0.2pkt) Zestaw zapytań powodujących uzupełnienie bazy danych o film Captain America:
+// The First Avenger wraz z uzupełnieniem informacji o reżyserze, scenarzystach i odtwórcach głównych ról 
+// (w oparciu o skrócone informacje z IMDB - http://www.imdb.com/title/tt0458339/) +
+// zapytanie pokazujące dodany do bazy film wraz odtwórcami głównych ról, scenarzystą i reżyserem. Plik SVG ma pokazywać wynik ostatniego zapytania.
+CREATE (CaptainAmerica:Movie {title:'Captain America: The First Avenger', released:2011})
+CREATE (Evans:Person {name:'Chris Evans', born:1981})
+CREATE (Hugo:Person {name:'Hugo Weaving', born:1960})
+CREATE (Samuel:Person {name:'Samuel L. Jackson', born:1948})
+CREATE (Joe:Person {name:'Joe Johnston', born:1950 })
+CREATE (Markus:Person {name:'Christopher Markus', born:1970})
+CREATE (McFelly:Person {name:'Stephen McFeely', born:1969})
+CREATE (Atwell:Person {name:'Hayley Atwell', born:1982})
+CREATE
+  (Joe)-[:DIRECTED]->(CaptainAmerica),
+  (Markus)-[:WROTE]->(CaptainAmerica),
+  (McFelly)-[:WROTE]->(CaptainAmerica),
+  (Evans)-[:ACTED_IN {roles:['Captain America / Steve Rogers']}]->(CaptainAmerica),
+  (Hugo)-[:ACTED_IN {roles:['Johann Schmidt / Red Skull']}]->(CaptainAmerica),
+  (Samuel)-[:ACTED_IN {roles:['Nick Fury']}]->(CaptainAmerica),
+  (Atwell)-[:ACTED_IN {roles:['Peggy Carter']}]->(CaptainAmerica)
+
+MATCH (movie:Movie { title: "Captain America: The First Avenger"})-[:ACTED_IN|:DIRECTED|:WROTE]-(person) 
+RETURN cpt, personmovie
