@@ -1,0 +1,45 @@
+//zad2
+//5.Uszereguj porty lotnicze według ilości rozpoczynających się w nich lotów
+MATCH ta= (a:Airport)<-[:ORIGIN]-(p:Flight)
+WITH a, count(p) as ct
+RETURN a, ct
+ORDER BY ct ASC
+
+//6. Znajdź wszystkie porty lotnicze, do których da się dolecieć (bezpośrednio lub z przesiadkami) z Los Angeles (LAX) wydając mniej niż 3000
+
+MATCH p = (origin:Airport { name:"LAX" })<-[:ORIGIN]-(:Flight)-[*]->(destination:Airport)
+WITH p , REDUCE(price = 0, f IN [node IN NODES(p) WHERE 'Flight' IN LABELS(node)] | price + [(f)<-[:ASSIGN]-(ticket) | ticket.price][0] ) AS price
+WHERE price < 3000 
+RETURN p ,price
+
+//7. Uszereguj połączenia, którymi można dotrzeć z Los Angeles (LAX) do Dayton (DAY) według ceny biletów
+MATCH p = (origin:Airport { name:"LAX" })<-[:ORIGIN]-(:Flight)-[*..9]-(destination:Airport{name:"DAY"})
+WITH p , REDUCE(price = 0, f IN [node IN NODES(p) WHERE 'Flight' IN LABELS(node)] | price + [(f)<-[:ASSIGN]-(ticket) | ticket.price][0] ) AS price
+RETURN p,price
+ORDER BY price
+//looping to lax 
+
+//help
+//MATCH p = (origin:Airport { name:"LAX" })<-[x:ORIGIN]-(:Flight)-[*1..9]-(dest:Airport{name:"DAY"})
+//UNWIND relationships(p) as rel
+//WITH p, count(rel) as distance
+//RETURN p,distance
+
+8. Znajdź najtańsze połączenie z Los Angeles (LAX) do Dayton (DAY)
+MATCH p = (origin:Airport { name:"LAX" })<-[:ORIGIN]-(:Flight)-[*1..9]-(destination:Airport{name:"DAY"})
+WITH p , REDUCE(price = 0, f IN [node IN NODES(p) WHERE 'Flight' IN LABELS(node)] | price + [(f)<-[:ASSIGN]-(ticket) | ticket.price][0] ) AS price
+RETURN p,price
+ORDER BY price asc
+LIMIT 1
+
+
+9. Uszereguj linie lotnicze według ilości miast, pomiędzy którymi oferują połączenia (unikalnych miast biorących udział w relacjach :ORIGIN i :DESTINATION węzłów typu Flight obsługiwanych przez daną linię)
+
+10. Znajdź najtańszą trasę łączącą 3 różne porty lotnicze
+MATCH p = (a1:Airport)<-[:ORIGIN]-(:Flight)-[:DESTINATION]->(a2:Airport)<-[:ORIGIN]-(:Flight)-[:DESTINATION]->(a3:Airport)
+WHERE not(a1=a2) AND not(a1=a3) AND not(a2=a3)
+WITH p, REDUCE(acc = 0, n IN [x IN NODES(p) WHERE 'Flight' IN LABELS(x)] |
+    acc + [(n)<-[:ASSIGN]-(ticket) | ticket.price][0]
+    ) as price
+RETURN p, price
+ORDER BY price asc LIMIT 1
